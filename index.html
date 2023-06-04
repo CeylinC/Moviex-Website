@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moviex</title>
+    <link rel="stylesheet" href="assets/css/component/hero-image.css">
+    <link rel="stylesheet" href="assets/css/component/navbar.css">
+    <link rel="stylesheet" href="assets/css/component/search.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/component/movie.css">
+    <script src="https://kit.fontawesome.com/70d415455e.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="" class="navbar-logo">
+            <img src="assets/img/logo.png" alt="">
+            <p class="navbar-logo-title">Moviex</p>
+        </a>
+        <div class="navbar-menu">
+            <a href="" title="Favorite Movies" class="favorite">
+                <i class="fa-solid fa-heart"></i>
+            </a>
+        </div>
+    </nav>
+    <div class="hero-image">
+        <h1 class="hero-image-title">The largest movie search engine</h1>
+        <h5 class="hero-image-subtitle">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Impedit, nisi.</h5>
+        <div class="search">
+            <input type="text" class="search-box" id="movie-search-box">
+            <button class="search-button" onclick="findMovies()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </div>
+    <div id="result">
+        <h1 id="result-title">Movies</h1>
+        <div id="movie-container">
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>
+
+<!--
+
+<div class="movie">
+    <a class="movie-img">
+        <img src="https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg"
+            alt="Movie">
+    </a>
+    <div class="movie-info">
+        <div class="movie-title">Avengers</div>
+        <div class="movie-year">2012</div>
+    </div>
+</div>
+
+-->
