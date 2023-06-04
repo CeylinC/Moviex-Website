@@ -1,0 +1,22 @@
+.hero-image{
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 64px);
+    overflow: hidden;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75)), url("../../img/hero-image.jpg");
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+.hero-image-title{
+    text-transform: capitalize;
+    font-weight: bold;
+    margin-top: 200px;
+}
+.hero-image-subtitle{
+    margin: 0 0 50px 0;
+}
