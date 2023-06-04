@@ -1,0 +1,28 @@
+.search{
+    height: 30px;
+    width: 280px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(255,238,99,0.2);
+    padding: 10px;
+}
+.search-box{
+    width: 250px;
+    outline: none;
+    font-size: 1.1rem;
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+.search-button{
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: white;
+    font-size: 1.5rem;
+}
