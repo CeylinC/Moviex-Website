@@ -1,6 +1,7 @@
 const movieSearchBox = document.getElementById('movie-search-box');
 const movieContainer = document.getElementById('movie-container');
 const resultTitle = document.getElementById('result-title');
+const movieDetailContainer = document.getElementById('movie-detail');
 const posterNotFound = "assets/img/img-not-found.jpg";
 let searchListMovies;
 
@@ -63,35 +64,33 @@ function loadMovieDetails() {
             const result = await fetch(`http://www.omdbapi.com/?i=${movie.id}&apikey=${APIKEY}`);
             const movieDetails = await result.json();
             console.log(movieDetails);
-            //displayMovieDetails(movieDetails);
+            displayMovieDetails(movieDetails);
         });
     });
 }
 
 function displayMovieDetails(details) {
-    resultGrid.innerHTML = `
-    <div class = "movie-poster">
-        <img src = "${(details.Poster != "N/A") ? details.Poster : "image_not_found.png"}" alt = "movie poster">
-    </div>
-    <div class = "movie-info">
-        <h3 class = "movie-title">${details.Title}</h3>
-        <ul class = "movie-misc-info">
-            <li class = "year">Year: ${details.Year}</li>
-            <li class = "rated">Ratings: ${details.Rated}</li>
-            <li class = "released">Released: ${details.Released}</li>
-        </ul>
-        <p class = "genre"><b>Genre:</b> ${details.Genre}</p>
-        <p class = "writer"><b>Writer:</b> ${details.Writer}</p>
-        <p class = "actors"><b>Actors: </b>${details.Actors}</p>
-        <p class = "plot"><b>Plot:</b> ${details.Plot}</p>
-        <p class = "language"><b>Language:</b> ${details.Language}</p>
-        <p class = "awards"><b><i class = "fas fa-award"></i></b> ${details.Awards}</p>
-    </div>
-    `;
-}
+    movieDetailContainer.style.display = "flex";
+    movieDetailContainer.innerHTML = `
+    <div class="movie-detail-poster">
+            <img src="${details.Poster != 'N/A' ? details.Poster : posterNotFound}"
+                alt="Movie">
+        </div>
+        <div class="movie-detail-info">
+            <h1 class="movie-detail-title">${details.Title}</h1>
+            <div class="movie-detail-imdb">
+                <i class="fa-brands fa-imdb"></i> ${details.imdbRating != "N/A" ? details.imdbRating : "No Explanation"}
+            </div>
+            <div class="movie-detail-year"><span>Year</span>${details.Year != "N/A" ? details.Year : "No Explanation"}</div>
+            <div class="movie-detail-genre"><span>Genre</span>${details.Genre != "N/A" ? details.Genre : "No Explanation"}</div>
+            <div class="movie-detail-runtime"><span>Runtime</span>${details.Runtime != "N/A" ? details.Runtime : "No Explanation"}</div>
+            <div class="movie-detail-actors"><span>Actors</span>${details.Actors != "N/A" ? details.Actors : "No Explanation"}</div>
+            <div class="movie-detail-writer"><span>Writer</span>${details.Writer != "N/A" ? details.Writer : "No Explanation"}</div>
+            <div class="movie-detail-director"><span>Director</span>${details.Director != "N/A" ? details.Director : "No Explanation"}</div>
+            <div class="movie-detail-country"><span>Country</span>${details.Country != "N/A" ? details.Country : "No Explanation"}</div>
+            <p class="movie-detail-plot">${details.Plot != "N/A" ? details.Plot : "No Explanation"}</p>
 
-// window.addEventListener('click', (event) => {
-//     if(event.target.className != "form-control"){
-//         searchList.classList.add('hide-search-list');
-//     }
-// });
+        </div>
+    `;
+    window.scrollTo(0, movieDetailContainer.offsetTop);
+}

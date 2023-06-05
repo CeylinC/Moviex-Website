@@ -1,0 +1,56 @@
+#movie-detail{
+    min-height: calc(100vh - 64px);
+    padding: 10px;
+    background-color: #1a1a1a;
+    color: white;
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.movie-detail-poster{
+    width: 280px;
+    height: 400px;
+}
+.movie-detail-poster img{
+    object-fit: cover;
+    width: 100%;
+}
+.movie-detail-info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+}
+.movie-detail-info .movie-detail-title{
+    margin: 0;
+}
+.movie-detail-info span{
+    display: inline-block;
+    width: 80px;
+    font-weight: bold;
+    color: #820000;
+}
+.movie-detail-info .movie-detail-imdb{
+    margin: 10px 0;
+    color: rgb(255,238,99);
+}
+.movie-detail-info .movie-detail-imdb .fa-imdb{
+    font-size: 1.5rem;
+}
+.movie-detail-info .movie-detail-plot{
+    margin-top: 15px;
+    max-width: 400px;
+}
+
+@media screen and (max-width: 767px) {
+    #movie-detail{
+        flex-direction: column;
+        padding-top: 100px;
+    }
+    .movie-detail-info{
+        margin-left: 0;
+    }
+    .movie-detail-info .movie-detail-title{
+        text-align: center;
+    }
+}
