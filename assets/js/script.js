@@ -2,6 +2,7 @@ const movieSearchBox = document.getElementById('movie-search-box');
 const movieContainer = document.getElementById('movie-container');
 const resultTitle = document.getElementById('result-title');
 const movieDetailContainer = document.getElementById('movie-detail');
+const displayFavoriteButton = document.querySelector(".favorite");
 const posterNotFound = "assets/img/img-not-found.jpg";
 let searchListMovies;
 
@@ -24,11 +25,12 @@ async function loadMovies(searchTerm) {
 function findMovies() {
     movieContainer.innerHTML = "";
     resultTitle.style.display = "none";
+    resultTitle.innerHTML = "Movies";
     let searchTerm = (movieSearchBox.value).trim();
     if (searchTerm.length > 0) {
         loadMovies(searchTerm);
     }
-    else{
+    else {
         alert("Please, Enter the Movie Name");
     }
 }
@@ -48,7 +50,7 @@ function displayMovieList(movies) {
             </div>
         </div>
         `;
-        
+
         movieContainer.insertAdjacentHTML("beforeend", movie);
     }
     window.scrollTo(0, movieContainer.parentElement.offsetTop);
@@ -78,8 +80,11 @@ function displayMovieDetails(details) {
         </div>
         <div class="movie-detail-info">
             <h1 class="movie-detail-title">${details.Title}</h1>
-            <div class="movie-detail-imdb">
-                <i class="fa-brands fa-imdb"></i> ${details.imdbRating != "N/A" ? details.imdbRating : "No Explanation"}
+            <div class="movie-detail-info-row">
+                <div class="movie-detail-imdb">
+                    <i class="fa-brands fa-imdb"></i> ${details.imdbRating != "N/A" ? details.imdbRating : "No Explanation"}
+                </div>
+                <i class="${isFavoriteMovie(details.imdbID) ? 'fa-solid' : 'fa-regular'} fa-heart movie-detail-favorite"></i>
             </div>
             <div class="movie-detail-year"><span>Year</span>${details.Year != "N/A" ? details.Year : "No Explanation"}</div>
             <div class="movie-detail-genre"><span>Genre</span>${details.Genre != "N/A" ? details.Genre : "No Explanation"}</div>
@@ -89,8 +94,49 @@ function displayMovieDetails(details) {
             <div class="movie-detail-director"><span>Director</span>${details.Director != "N/A" ? details.Director : "No Explanation"}</div>
             <div class="movie-detail-country"><span>Country</span>${details.Country != "N/A" ? details.Country : "No Explanation"}</div>
             <p class="movie-detail-plot">${details.Plot != "N/A" ? details.Plot : "No Explanation"}</p>
-
         </div>
     `;
     window.scrollTo(0, movieDetailContainer.offsetTop);
+    addFavorite(details.imdbID);
 }
+
+function addFavorite(movieID) {
+    const addFavoriteButton = document.querySelector(".movie-detail-favorite");
+    addFavoriteButton.addEventListener("click", function () {
+        if(isFavoriteMovie(movieID)){
+            localStorage.removeItem(movieID);
+            addFavoriteButton.classList.replace("fa-solid", "fa-regular");
+            document.getElementById(movieID).style.display = "none";
+
+        }
+        else{
+            localStorage.setItem(movieID, movieID);
+            addFavoriteButton.classList.replace("fa-regular", "fa-solid");
+            document.getElementById(movieID).style.display = "block";
+        }
+    }
+    );
+}
+
+function isFavoriteMovie(movieID) {
+    for (var i = 0, len = localStorage.length; i < len; ++i) {
+        if (movieID == localStorage.key(i)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+displayFavoriteButton.addEventListener("click", async function () {
+    movieContainer.innerHTML = "";
+    resultTitle.innerHTML = "Favorite Movies";
+    let movies = [];
+    for (var i = 0, len = localStorage.length; i < len; ++i) {
+        const result = await fetch(`http://www.omdbapi.com/?i=${localStorage.key(i)}&apikey=${APIKEY}`);
+        const movie = await result.json();
+        movies.push(movie);
+    }
+    displayMovieList(movies);
+    movieDetailContainer.style.display = "none";
+});
+
