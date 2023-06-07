@@ -1,3 +1,17 @@
+@keyframes heartAnimation {
+    from{
+        font-size: 1.5rem;
+    }
+
+    50%{
+        font-size: 2rem;
+    }
+
+    to{
+        font-size: 1.5rem;
+    }
+}
+
 #movie-detail{
     min-height: calc(100vh - 64px);
     padding: 10px;
@@ -10,7 +24,7 @@
 }
 .movie-detail-poster{
     width: 280px;
-    height: 400px;
+    height: 440px;
 }
 .movie-detail-poster img{
     object-fit: cover;
@@ -20,6 +34,7 @@
     display: flex;
     flex-direction: column;
     margin-left: 25px;
+    min-width: 250px;
 }
 .movie-detail-info .movie-detail-title{
     margin: 0;
@@ -37,6 +52,23 @@
 .movie-detail-info .movie-detail-imdb .fa-imdb{
     font-size: 1.5rem;
 }
+.movie-detail-info .movie-detail-favorite{
+    cursor: pointer;
+    right: 50px;
+    font-size: 1.5rem;
+    color: #820000;
+    margin-right: 50px;
+    transform: translateX(50%);
+}
+.movie-detail-info .movie-detail-favorite:hover{
+    animation: heartAnimation 0.5s infinite;
+}
+.movie-detail-info-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 .movie-detail-info .movie-detail-plot{
     margin-top: 15px;
     max-width: 400px;
@@ -52,5 +84,8 @@
     }
     .movie-detail-info .movie-detail-title{
         text-align: center;
+    }
+    .movie-detail-info .movie-detail-favorite{
+        margin-right: 20px;
     }
 }
