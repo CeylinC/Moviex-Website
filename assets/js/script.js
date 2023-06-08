@@ -5,6 +5,14 @@ const movieDetailContainer = document.getElementById('movie-detail');
 const displayFavoriteButton = document.querySelector(".favorite");
 const sortButtons = document.querySelector(".sort-buttons");
 const posterNotFound = "assets/img/img-not-found.jpg";
+const pagination = document.getElementById("pagination");
+const nextButton = document.getElementById("next-button");
+const prevButton = document.getElementById("prev-button");
+const paginationNumbers = document.getElementById("pagination-numbers");
+const paginationLimit = 10;
+
+let currentPage;
+let pageCount;
 
 const APIKEY = "d45c60a3";
 
@@ -17,17 +25,16 @@ async function loadMovies(searchTerm) {
         if (data.Response == "True") {
             data.Search.forEach(movie => {
                 movies.push(movie);
-                console.log(movie);
             });
         }
         else {
             break;
         }
     }
-    if(movies.length > 0){
+    if (movies.length > 0) {
         displayMovieList(movies);
     }
-    else{
+    else {
         alert("Sorry, Not Found Movie :(");
     }
 }
@@ -44,10 +51,24 @@ function findMovies() {
 }
 
 function displayMovieList(movies) {
+    pagination.style.display = "flex";
     sortButtons.style.display = "block";
     resultTitle.style.display = "block";
+    createPagination(movies);
+    createMovieList(movies);
+    sortAscending(movies);
+    sortDescending(movies);
+
+    nextPage(movies);
+    prevPage(movies);
+    changePage(movies);
+}
+
+function createMovieList(movies) {
     movieContainer.innerHTML = "";
-    for (let i = 0; i < movies.length; i++) {
+    for (let i = (currentPage - 1) * paginationLimit;
+        i < currentPage * paginationLimit && i < movies.length;
+        i++) {
         let movie = `
         <div class="movie" id=${movies[i].imdbID}>
             <a class="movie-img">
@@ -64,8 +85,6 @@ function displayMovieList(movies) {
         movieContainer.insertAdjacentHTML("beforeend", movie);
     }
     window.scrollTo(0, movieContainer.parentElement.offsetTop);
-    sortAscending(movies);
-    sortDescending(movies);
     loadMovieDetails();
 }
 
@@ -73,11 +92,9 @@ function loadMovieDetails() {
     let searchListMovies = movieContainer.querySelectorAll('.movie');
     searchListMovies.forEach(movie => {
         movie.addEventListener('click', async () => {
-            console.log(movie.id);
             movieSearchBox.value = "";
             const result = await fetch(`http://www.omdbapi.com/?i=${movie.id}&apikey=${APIKEY}`);
             const movieDetails = await result.json();
-            console.log(movieDetails);
             displayMovieDetails(movieDetails);
         });
     });
@@ -151,36 +168,87 @@ displayFavoriteButton.addEventListener("click", async function () {
     movieDetailContainer.style.display = "none";
 });
 
-function sortAscending(movies){
+function sortAscending(movies) {
     const ascendingButton = document.querySelector(".ascending-year");
     ascendingButton.addEventListener("click", function () {
-        displayMovieList(movies.sort((a, b) => {
+        currentPage = 1;
+        displayPagination();
+        createMovieList(movies.sort((a, b) => {
             if (a.Year < b.Year) {
                 return -1;
             }
             else if (a.Year > b.Year) {
                 return 1;
             }
-            else{
+            else {
                 return 0;
             }
         }));
     });
 }
 
-function sortDescending(movies){
+function sortDescending(movies) {
     const descendingButton = document.querySelector(".descending-year");
     descendingButton.addEventListener("click", function () {
-        displayMovieList(movies.sort((a, b) => {
+        currentPage = 1;
+        displayPagination();
+        createMovieList(movies.sort((a, b) => {
             if (a.Year < b.Year) {
                 return 1;
             }
             else if (a.Year > b.Year) {
                 return -1;
             }
-            else{
+            else {
                 return 0;
             }
         }));
+    });
+}
+
+function createPagination(movies) {
+    currentPage = 1;
+    pageCount = Math.ceil(movies.length / paginationLimit);
+    displayPagination();
+}
+
+function displayPagination() {
+    paginationNumbers.innerHTML = "";
+    for (let i = 0; i < pageCount; i++) {
+        let pageNumber = `<div class="page ${currentPage == i + 1 ? "current-page" : ""}">${i + 1}</div>`;
+        paginationNumbers.insertAdjacentHTML("beforeend", pageNumber);
+    }
+}
+
+function nextPage(movies) {
+    nextButton.addEventListener("click", function () {
+        if (currentPage != pageCount) {
+            paginationNumbers.children[currentPage - 1].classList.remove("current-page");
+            currentPage++;
+            createMovieList(movies);
+            paginationNumbers.children[currentPage - 1].classList.add("current-page");
+        }
+    });
+}
+
+function changePage(movies) {
+    document.querySelectorAll(".page").forEach((page) => {
+        page.addEventListener("click", function () {
+            paginationNumbers.children[currentPage - 1].classList.remove("current-page");
+            currentPage = page.innerHTML;
+            createMovieList(movies);
+            page.classList.add("current-page");
+        });
+    });
+}
+
+function prevPage(movies) {
+    prevButton.addEventListener("click", function () {
+        if (currentPage > 0) {
+            paginationNumbers.children[currentPage - 1].classList.remove("current-page");
+            currentPage--;
+            createMovieList(movies);
+            paginationNumbers.children[currentPage - 1].classList.add("current-page");
+        }
     });
 }
