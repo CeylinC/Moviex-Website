@@ -3,35 +3,36 @@
 html{
   scroll-behavior: smooth;
 }
-
 body {
   margin: 0;
   padding: 0;
   font-family: "Poppins";
   background-color: #252525;
 }
-
 #result #result-title{
   margin: 100px 0 30px 0;
   display: none;
   text-align: center;
   color: white;
 }
-
 #result #result-title::first-letter{
   font-size: 3rem;
 }
-
 #movie-container{
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
-
 #movie-container:has(.movie){
   padding: 0 25px 60px 0;
 }
-
 #movie-container .movie{
   margin: 25px;
+}
+
+@media screen and (max-width: 768px) {
+  #result .sort-buttons{
+    margin-left: 0;
+    text-align: center;
+  }
 }

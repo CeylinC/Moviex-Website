@@ -3,28 +3,36 @@ const movieContainer = document.getElementById('movie-container');
 const resultTitle = document.getElementById('result-title');
 const movieDetailContainer = document.getElementById('movie-detail');
 const displayFavoriteButton = document.querySelector(".favorite");
+const sortButtons = document.querySelector(".sort-buttons");
 const posterNotFound = "assets/img/img-not-found.jpg";
-let searchListMovies;
-
 
 const APIKEY = "d45c60a3";
 
 async function loadMovies(searchTerm) {
-    const URL = `https://omdbapi.com/?s=${searchTerm}&page=1&apikey=${APIKEY}`;
-    const res = await fetch(`${URL}`);
-    const data = await res.json();
-    console.log(data.Search);
-    if (data.Response == "True") {
-        displayMovieList(data.Search);
+    let movies = [];
+    for (let i = 1; i <= 100; i++) {
+        const URL = `https://omdbapi.com/?s=${searchTerm}&page=${i}&apikey=${APIKEY}`;
+        const res = await fetch(`${URL}`);
+        const data = await res.json();
+        if (data.Response == "True") {
+            data.Search.forEach(movie => {
+                movies.push(movie);
+                console.log(movie);
+            });
+        }
+        else {
+            break;
+        }
     }
-    else {
+    if(movies.length > 0){
+        displayMovieList(movies);
+    }
+    else{
         alert("Sorry, Not Found Movie :(");
     }
 }
 
 function findMovies() {
-    movieContainer.innerHTML = "";
-    resultTitle.style.display = "none";
     resultTitle.innerHTML = "Movies";
     let searchTerm = (movieSearchBox.value).trim();
     if (searchTerm.length > 0) {
@@ -36,7 +44,9 @@ function findMovies() {
 }
 
 function displayMovieList(movies) {
+    sortButtons.style.display = "block";
     resultTitle.style.display = "block";
+    movieContainer.innerHTML = "";
     for (let i = 0; i < movies.length; i++) {
         let movie = `
         <div class="movie" id=${movies[i].imdbID}>
@@ -54,11 +64,13 @@ function displayMovieList(movies) {
         movieContainer.insertAdjacentHTML("beforeend", movie);
     }
     window.scrollTo(0, movieContainer.parentElement.offsetTop);
+    sortAscending(movies);
+    sortDescending(movies);
     loadMovieDetails();
 }
 
 function loadMovieDetails() {
-    searchListMovies = movieContainer.querySelectorAll('.movie');
+    let searchListMovies = movieContainer.querySelectorAll('.movie');
     searchListMovies.forEach(movie => {
         movie.addEventListener('click', async () => {
             console.log(movie.id);
@@ -103,13 +115,12 @@ function displayMovieDetails(details) {
 function addFavorite(movieID) {
     const addFavoriteButton = document.querySelector(".movie-detail-favorite");
     addFavoriteButton.addEventListener("click", function () {
-        if(isFavoriteMovie(movieID)){
+        if (isFavoriteMovie(movieID)) {
             localStorage.removeItem(movieID);
             addFavoriteButton.classList.replace("fa-solid", "fa-regular");
             document.getElementById(movieID).style.display = "none";
-
         }
-        else{
+        else {
             localStorage.setItem(movieID, movieID);
             addFavoriteButton.classList.replace("fa-regular", "fa-solid");
             document.getElementById(movieID).style.display = "block";
@@ -140,3 +151,36 @@ displayFavoriteButton.addEventListener("click", async function () {
     movieDetailContainer.style.display = "none";
 });
 
+function sortAscending(movies){
+    const ascendingButton = document.querySelector(".ascending-year");
+    ascendingButton.addEventListener("click", function () {
+        displayMovieList(movies.sort((a, b) => {
+            if (a.Year < b.Year) {
+                return -1;
+            }
+            else if (a.Year > b.Year) {
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }));
+    });
+}
+
+function sortDescending(movies){
+    const descendingButton = document.querySelector(".descending-year");
+    descendingButton.addEventListener("click", function () {
+        displayMovieList(movies.sort((a, b) => {
+            if (a.Year < b.Year) {
+                return 1;
+            }
+            else if (a.Year > b.Year) {
+                return -1;
+            }
+            else{
+                return 0;
+            }
+        }));
+    });
+}

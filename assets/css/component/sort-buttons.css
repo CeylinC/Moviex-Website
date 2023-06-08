@@ -1,0 +1,18 @@
+.sort-buttons{
+    display: none;
+    color: white;
+}
+.sort-buttons{
+    font-size: 0.7rem;
+    margin-left: 150px;
+}
+.sort-buttons > *{
+    display: inline-block;
+    border-radius: 10px;
+    padding: 5px;
+    border: 1px solid white;
+    cursor: pointer;
+}
+.sort-buttons i{
+    font-size: 1rem;
+}
