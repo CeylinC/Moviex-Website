@@ -1,0 +1,30 @@
+#pagination{
+    color: white;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#pagination > *{
+    margin: 3px;
+}
+#pagination .pagination-button{
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #820000;
+}
+#pagination #pagination-numbers{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#pagination #pagination-numbers > .page{
+    cursor: pointer;
+    margin: 5px;
+}
+#pagination #pagination-numbers .current-page{
+    font-weight: bold;
+    font-size: 1.4rem;
+}
