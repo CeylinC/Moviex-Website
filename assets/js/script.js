@@ -168,7 +168,7 @@ displayFavoriteButton.addEventListener("click", async function () {
     resultTitle.innerHTML = "Favorite Movies";
     let movies = [];
     for (var i = 0, len = localStorage.length; i < len; ++i) {
-        const result = await fetch(`http://www.omdbapi.com/?i=${localStorage.key(i)}&apikey=${APIKEY}`);
+        const result = await fetch(`https://www.omdbapi.com/?i=${localStorage.key(i)}&apikey=${APIKEY}`);
         const movie = await result.json();
         movies.push(movie);
     }
