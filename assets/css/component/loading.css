@@ -1,0 +1,27 @@
+@keyframes spinnerAnimation{
+from{
+    transform: rotate(0);
+}
+to{
+    transform: rotate(360deg);
+}
+}
+#loading{
+    display: none;
+    background-color: rgba(0, 0, 0, 0.95);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+#loading .spinner{
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border: 20px solid rgb(10, 10, 10);
+    border-top: 20px solid #820000;
+    border-radius: 50%;
+    animation: spinnerAnimation 1s infinite;
+}

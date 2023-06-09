@@ -10,6 +10,7 @@ const nextButton = document.getElementById("next-button");
 const prevButton = document.getElementById("prev-button");
 const paginationNumbers = document.getElementById("pagination-numbers");
 const paginationLimit = 10;
+const loadingScreen = document.getElementById("loading");
 
 let currentPage;
 let pageCount;
@@ -35,17 +36,20 @@ async function loadMovies(searchTerm) {
         displayMovieList(movies);
     }
     else {
+        loadingScreen.style.display = "none";
         alert("Sorry, Not Found Movie :(");
     }
 }
 
 function findMovies() {
+    loadingScreen.style.display = "flex";
     resultTitle.innerHTML = "Movies";
     let searchTerm = (movieSearchBox.value).trim();
     if (searchTerm.length > 0) {
         loadMovies(searchTerm);
     }
     else {
+        loadingScreen.style.display = "none";
         alert("Please, Enter the Movie Name");
     }
 }
@@ -56,6 +60,7 @@ function displayMovieList(movies) {
     resultTitle.style.display = "block";
     createPagination(movies);
     createMovieList(movies);
+
     sortAscending(movies);
     sortDescending(movies);
 
@@ -84,6 +89,7 @@ function createMovieList(movies) {
 
         movieContainer.insertAdjacentHTML("beforeend", movie);
     }
+    loadingScreen.style.display = "none";
     window.scrollTo(0, movieContainer.parentElement.offsetTop);
     loadMovieDetails();
 }
@@ -92,6 +98,7 @@ function loadMovieDetails() {
     let searchListMovies = movieContainer.querySelectorAll('.movie');
     searchListMovies.forEach(movie => {
         movie.addEventListener('click', async () => {
+            loadingScreen.style.display = "flex";
             movieSearchBox.value = "";
             const result = await fetch(`http://www.omdbapi.com/?i=${movie.id}&apikey=${APIKEY}`);
             const movieDetails = await result.json();
@@ -126,6 +133,7 @@ function displayMovieDetails(details) {
         </div>
     `;
     window.scrollTo(0, movieDetailContainer.offsetTop);
+    loadingScreen.style.display = "none";
     addFavorite(details.imdbID);
 }
 
