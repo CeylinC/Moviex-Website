@@ -16,9 +16,11 @@
     background-color: #820000;
 }
 #pagination #pagination-numbers{
+    max-width: calc(100% - 100px);
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
 }
 #pagination #pagination-numbers > .page{
     cursor: pointer;
