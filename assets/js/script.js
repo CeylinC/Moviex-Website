@@ -100,7 +100,7 @@ function loadMovieDetails() {
         movie.addEventListener('click', async () => {
             loadingScreen.style.display = "flex";
             movieSearchBox.value = "";
-            const result = await fetch(`http://www.omdbapi.com/?i=${movie.id}&apikey=${APIKEY}`);
+            const result = await fetch(`https://www.omdbapi.com/?i=${movie.id}&apikey=${APIKEY}`);
             const movieDetails = await result.json();
             displayMovieDetails(movieDetails);
         });
