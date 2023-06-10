@@ -14,11 +14,12 @@ const loadingScreen = document.getElementById("loading");
 
 let currentPage;
 let pageCount;
+let movies;
 
 const APIKEY = "d45c60a3";
 
 async function loadMovies(searchTerm) {
-    let movies = [];
+    movies = [];
     for (let i = 1; i <= 100; i++) {
         const URL = `https://omdbapi.com/?s=${searchTerm}&page=${i}&apikey=${APIKEY}`;
         const res = await fetch(`${URL}`);
@@ -64,8 +65,6 @@ function displayMovieList(movies) {
     sortAscending(movies);
     sortDescending(movies);
 
-    nextPage(movies);
-    prevPage(movies);
     changePage(movies);
 }
 
@@ -228,16 +227,16 @@ function displayPagination() {
     }
 }
 
-function nextPage(movies) {
-    nextButton.addEventListener("click", function () {
-        if (currentPage != pageCount) {
-            paginationNumbers.children[currentPage - 1].classList.remove("current-page");
-            currentPage++;
-            createMovieList(movies);
-            paginationNumbers.children[currentPage - 1].classList.add("current-page");
-        }
-    });
-}
+
+nextButton.addEventListener("click", function () {
+    if (currentPage != pageCount) {
+        paginationNumbers.children[currentPage - 1].classList.remove("current-page");
+        currentPage++;
+        createMovieList(movies);
+        paginationNumbers.children[currentPage - 1].classList.add("current-page");
+    }
+});
+
 
 function changePage(movies) {
     document.querySelectorAll(".page").forEach((page) => {
@@ -250,13 +249,13 @@ function changePage(movies) {
     });
 }
 
-function prevPage(movies) {
-    prevButton.addEventListener("click", function () {
-        if (currentPage > 0) {
-            paginationNumbers.children[currentPage - 1].classList.remove("current-page");
-            currentPage--;
-            createMovieList(movies);
-            paginationNumbers.children[currentPage - 1].classList.add("current-page");
-        }
-    });
-}
+
+prevButton.addEventListener("click", function () {
+    if (currentPage > 0) {
+        paginationNumbers.children[currentPage - 1].classList.remove("current-page");
+        currentPage--;
+        createMovieList(movies);
+        paginationNumbers.children[currentPage - 1].classList.add("current-page");
+    }
+});
+
